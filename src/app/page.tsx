@@ -1,4 +1,6 @@
 import ExcuseGenerator from '@/components/ExcuseGenerator';
+import AdBanner from '@/components/AdBanner';
+import Link from 'next/link';
 
 export default function Home() {
   return (
@@ -19,11 +21,24 @@ export default function Home() {
         <ExcuseGenerator />
       </main>
 
+      {/* 広告バナー */}
+      <div className="px-4 pb-4 max-w-lg mx-auto w-full">
+        <AdBanner slot="XXXXXXXX" format="horizontal" />
+      </div>
+
       {/* フッター */}
       <footer className="py-6 px-4 text-center border-t border-[#1a1a1a]">
-        <p className="text-zinc-600 text-xs">
+        <p className="text-zinc-600 text-xs mb-3">
           ※ このアプリは娯楽目的です。悪用禁止。
         </p>
+        <div className="flex justify-center gap-4 text-zinc-600 text-xs">
+          <Link href="/terms" className="hover:text-zinc-400 transition-colors">
+            利用規約
+          </Link>
+          <Link href="/privacy" className="hover:text-zinc-400 transition-colors">
+            プライバシーポリシー
+          </Link>
+        </div>
       </footer>
     </div>
   );
