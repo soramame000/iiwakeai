@@ -83,3 +83,4 @@ export function buildQuickPrompt(category: Category, target: Target): string {
 {"excuse": "言い訳", "followUp": "追及対策", "credibilityScore": 3}`;
 }
 
+

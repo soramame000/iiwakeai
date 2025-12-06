@@ -68,3 +68,4 @@ export const TONE_LABELS: Record<Tone, { label: string; description: string }> =
   apologetic: { label: '謝罪重視', description: '申し訳なさ全開' },
 };
 
+

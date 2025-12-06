@@ -345,7 +345,7 @@ export default function ExcuseGenerator() {
             </div>
 
             {/* アクションボタン */}
-            <div className="flex gap-3">
+            <div className="flex gap-3 mb-4">
               <button
                 onClick={handleCopy}
                 className={`flex-1 card p-3 text-center font-medium transition-all ${
@@ -361,10 +361,35 @@ export default function ExcuseGenerator() {
                 🔄 もう一度
               </button>
             </div>
+
+            {/* SNSシェアボタン */}
+            <div className="flex gap-3">
+              <a
+                href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(
+                  `言い訳AIで生成した言い訳👇\n\n「${result.excuse.slice(0, 100)}${result.excuse.length > 100 ? '...' : ''}」\n\n信憑性: ${'★'.repeat(result.credibilityScore)}${'☆'.repeat(5 - result.credibilityScore)}\n\n#言い訳AI`
+                )}&url=${encodeURIComponent('https://iiwakeai.onrender.com')}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 card p-3 text-center font-medium hover:bg-[#1da1f2]/20 hover:border-[#1da1f2] transition-all"
+              >
+                𝕏 シェア
+              </a>
+              <a
+                href={`https://social-plugins.line.me/lineit/share?url=${encodeURIComponent('https://iiwakeai.onrender.com')}&text=${encodeURIComponent(
+                  `言い訳AIで生成👇\n\n「${result.excuse.slice(0, 100)}${result.excuse.length > 100 ? '...' : ''}」`
+                )}`}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-1 card p-3 text-center font-medium hover:bg-[#00b900]/20 hover:border-[#00b900] transition-all"
+              >
+                LINE
+              </a>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
     </div>
   );
 }
+
 
