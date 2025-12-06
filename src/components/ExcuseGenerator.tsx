@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import {
   Category,
@@ -14,6 +14,7 @@ import {
   URGENCY_LABELS,
   TONE_LABELS,
 } from '@/types';
+import { getRemainingCount, canGenerate, incrementUsage, getDailyLimit } from '@/lib/usage';
 
 type Step = 'category' | 'target' | 'options' | 'generating' | 'result';
 
@@ -27,6 +28,12 @@ export default function ExcuseGenerator() {
   const [result, setResult] = useState<ExcuseOutput | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [copied, setCopied] = useState(false);
+  const [remaining, setRemaining] = useState<number>(getDailyLimit());
+
+  // クライアントサイドで残り回数を取得
+  useEffect(() => {
+    setRemaining(getRemainingCount());
+  }, [step]);
 
   const handleCategorySelect = (cat: Category) => {
     setCategory(cat);
@@ -43,6 +50,12 @@ export default function ExcuseGenerator() {
 
   const handleGenerate = useCallback(async () => {
     if (!category || !target) return;
+
+    // 回数チェック
+    if (!canGenerate()) {
+      setError('今日の無料回数を使い切りました。明日また来てね！');
+      return;
+    }
 
     setStep('generating');
     setError(null);
@@ -68,6 +81,11 @@ export default function ExcuseGenerator() {
       }
 
       const data = await res.json() as ExcuseOutput;
+      
+      // 成功時に回数をインクリメント
+      incrementUsage();
+      setRemaining(getRemainingCount());
+      
       setResult(data);
       setStep('result');
     } catch (err) {
@@ -104,6 +122,19 @@ export default function ExcuseGenerator() {
 
   return (
     <div className="w-full max-w-lg mx-auto px-4">
+      {/* 残り回数表示 */}
+      <div className="flex justify-center mb-4">
+        <div className={`text-xs px-3 py-1 rounded-full ${
+          remaining > 0 
+            ? 'bg-[--accent-cyan]/10 text-[--accent-cyan] border border-[--accent-cyan]/30' 
+            : 'bg-red-500/10 text-red-400 border border-red-500/30'
+        }`}>
+          {remaining > 0 
+            ? `今日の残り: ${remaining}/${getDailyLimit()}回` 
+            : '今日の無料回数を使い切りました'}
+        </div>
+      </div>
+
       {/* ステップインジケーター */}
       <div className="flex justify-center mb-8">
         <div className="step-indicator">
@@ -276,10 +307,17 @@ export default function ExcuseGenerator() {
             {/* 生成ボタン */}
             <button
               onClick={handleGenerate}
-              className="btn-primary w-full text-lg glitch"
+              disabled={remaining <= 0}
+              className={`btn-primary w-full text-lg ${remaining > 0 ? 'glitch' : 'opacity-50 cursor-not-allowed'}`}
             >
-              言い訳を生成する
+              {remaining > 0 ? '言い訳を生成する' : '今日は使い切りました 🙏'}
             </button>
+            
+            {remaining <= 0 && (
+              <p className="text-center text-zinc-500 text-xs mt-3">
+                明日0時にリセットされます
+              </p>
+            )}
           </motion.div>
         )}
 
