@@ -25,6 +25,19 @@ export default function Home() {
         <AdBanner slot="実際のスロットID" format="horizontal" />
       </div> */}
 
+      {/* サポートボタン */}
+      <div className="px-4 pb-6 max-w-lg mx-auto w-full">
+        <a
+          href="https://ofuse.me/YOUR_USERNAME"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="block w-full py-3 px-4 rounded-lg bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 text-center hover:from-yellow-500/30 hover:to-orange-500/30 transition-all"
+        >
+          <span className="text-yellow-400 font-medium">☕ 開発者にコーヒーを奢る</span>
+          <span className="text-zinc-500 text-xs block mt-1">このアプリが役立ったら応援してね</span>
+        </a>
+      </div>
+
       {/* フッター */}
       <footer className="py-6 px-4 text-center border-t border-[#1a1a1a]">
         <p className="text-zinc-600 text-xs mb-3">
