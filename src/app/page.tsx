@@ -28,7 +28,7 @@ export default function Home() {
       {/* サポートボタン */}
       <div className="px-4 pb-6 max-w-lg mx-auto w-full">
         <a
-          href="https://ofuse.me/YOUR_USERNAME"
+          href="https://ofuse.me/jantsuruoka"
           target="_blank"
           rel="noopener noreferrer"
           className="block w-full py-3 px-4 rounded-lg bg-gradient-to-r from-yellow-500/20 to-orange-500/20 border border-yellow-500/30 text-center hover:from-yellow-500/30 hover:to-orange-500/30 transition-all"
